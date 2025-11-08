@@ -1,0 +1,75 @@
+:root {
+  --primary-blue: #6AADB7; /* Ou un bleu plus proche de Doctolib si vous préférez: #00a4b7 */
+  --light-blue: #e6f2ff;
+  --text-dark: #333;
+  --text-muted: #666;
+  --bg-light: #f8f9fa;
+  --border-color: #dee2e6;
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --font-family: 'Inter', sans-serif; /* Ou 'Roboto', 'Arial', etc. */
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f0f2f5; /* Un arrière-plan légèrement gris */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.btn-primary {
+  background-color: #6AADB7;
+  border-color: #6AADB7;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #6AADB7; /* Un bleu légèrement plus foncé */
+  border-color: #6AADB7;
+}
+
+.btn-outline-primary {
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-blue);
+  color: #fff;
+}
+
+/* Styles pour les cartes */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+/* Utilitaires */
+.py-5 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.my-5 {
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+}
