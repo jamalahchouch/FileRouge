@@ -10,14 +10,24 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
 
-            // Relation avec la table roles
-            $table->foreignId('role_id')
-                  ->constrained('roles')
-                  ->onDelete('cascade'); // Supprime le user si le rôle est supprimé
+            // Role
+            $table->foreignId('role_id')->constrained('roles')->onDelete('cascade');
+
+            // Champs spécifiques médecin
+            $table->string('speciality')->nullable();
+            $table->string('description')->nullable();
+            $table->string('city')->nullable();
+            $table->string('image')->nullable();
+
+            // Champs spécifiques patient
+            $table->string('phone')->nullable();
+            $table->integer('age')->nullable();
+            $table->string('gender')->nullable(); // Optionnel
 
             $table->rememberToken();
             $table->timestamps();
