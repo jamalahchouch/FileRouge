@@ -14,13 +14,24 @@ class DoctorController extends Controller
     $this->middleware('role:doctor')->except(['listDoctors']);
 }
      public function listDoctors()
-    {
-        $doctors = User::whereHas('role', function($query){
-            $query->where('name', 'doctor');
-        })->select('id', 'name', 'email')->get();
+{
+    // Récupérer tous les médecins avec toutes leurs infos
+    $doctors = User::whereHas('role', function ($query) {
+        $query->where('name', 'doctor');
+    })->get();
 
-        return response()->json($doctors);
-    }
+    // Ajouter l'URL publique de l'image
+    $doctors->transform(function ($doctor) {
+        if ($doctor->image) {
+            // storage/app/public/doctors/... → http://localhost:8000/storage/doctors/...
+            $doctor->image = asset('storage/' . $doctor->image);
+        }
+
+        return $doctor;
+    });
+
+    return response()->json($doctors);
+}
    
 
     //  Créer un créneau
