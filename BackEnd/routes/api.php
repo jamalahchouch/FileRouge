@@ -30,15 +30,23 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/doctor/profile', function () {
+    return Auth::user();
+})->middleware(['auth:sanctum', 'role:doctor']);
+
+Route::get('/availability', [DoctorController::class, 'getDoctorAvailability'])
+    ->middleware('auth:sanctum');
 
     // Doctor routes
     Route::prefix('doctor')->group(function () {
         Route::post('/availability', [DoctorController::class, 'createAvailability']);
         Route::put('/availability/{id}', [DoctorController::class, 'updateAvailability']);
         Route::delete('/availability/{id}', [DoctorController::class, 'deleteAvailability']);
+          Route::get('/availability', [DoctorController::class, 'listAvailability']);
         Route::get('/appointments', [DoctorController::class, 'listAppointments']);
         Route::put('/appointments/{id}', [DoctorController::class, 'updateAppointment']);
         Route::get('/stats', [DoctorController::class, 'stats']);
+      
     });
 
     // Secretary routes
@@ -58,5 +66,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/appointments/{id}', [PatientController::class, 'deleteAppointment']);
         Route::get('/availabilities', [PatientController::class, 'listAvailabilities']);
     });
+
+    Route::middleware('auth:sanctum')->put('/users/{id}', [AuthController::class, 'updateUser']);
+
+    // Delete user
+    Route::middleware('auth:sanctum')->delete('/users/{id}', [AuthController::class, 'deleteUser']);
 
 });

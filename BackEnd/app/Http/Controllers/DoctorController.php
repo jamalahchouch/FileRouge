@@ -11,7 +11,7 @@ class DoctorController extends Controller
 {
     public function __construct(){
     $this->middleware('auth:sanctum')->except(['listDoctors']);
-    $this->middleware('role:doctor')->except(['listDoctors']);
+    
 }
      public function listDoctors()
 {
@@ -33,6 +33,17 @@ class DoctorController extends Controller
     return response()->json($doctors);
 }
    
+public function profile()
+{
+    $doctor = Auth::user();
+
+    // Ajouter URL pleine pour l'image
+    if ($doctor->image) {
+        $doctor->image = asset('storage/' . $doctor->image);
+    }
+
+    return response()->json($doctor);
+}
 
     //  Créer un créneau
     public function createAvailability(Request $request)
@@ -50,6 +61,38 @@ class DoctorController extends Controller
 
         return response()->json($availability, 201);
     }
+    public function listAvailability()
+{
+    $availabilities = Availability::where('doctor_id', Auth::id())
+        ->orderBy('start_at', 'asc')
+        ->get();
+
+    return response()->json($availabilities);
+}
+
+public function getDoctorAvailability(Request $request)
+{
+    $request->validate([
+        'doctor_id' => 'required|exists:users,id',
+    ]);
+
+    // Récupérer tous les créneaux
+    $availabilities = Availability::where('doctor_id', $request->doctor_id)
+        ->orderBy('start_at', 'asc')
+        ->get();
+
+    // Vérifier pour chaque créneau s'il est déjà pris
+    $availabilities = $availabilities->map(function ($slot) {
+        $slot->taken = \App\Models\Appointment::where('doctor_id', $slot->doctor_id)
+            ->where('start_at', '<=', $slot->end_at)
+            ->where('end_at', '>=', $slot->start_at)
+            ->exists();
+        return $slot;
+    });
+
+    return response()->json($availabilities);
+}
+
 
     //  Modifier un créneau
     public function updateAvailability(Request $request, $id)
@@ -73,17 +116,27 @@ class DoctorController extends Controller
     // Lister les rendez-vous du médecin
     public function listAppointments()
     {
-        $appointments = Appointment::where('doctor_id', Auth::id())->orderBy('start_at', 'asc')->get();
+        $appointments = Appointment::where('doctor_id', Auth::id())->with('patient')->orderBy('start_at', 'asc')->get();
         return response()->json($appointments);
     }
 
     // Modifier un rendez-vous
     public function updateAppointment(Request $request, $id)
-    {
-        $appointment = Appointment::where('doctor_id', Auth::id())->findOrFail($id);
-        $appointment->update($request->only(['notes', 'status']));
-        return response()->json($appointment);
+{
+    $appointment = Appointment::findOrFail($id);
+
+    
+    // Mettre à jour les champs du rendez-vous
+    $appointment->update($request->only(['notes', 'status']));
+
+    // Mettre à jour les infos du patient si fournies
+    if ($request->has('patient')) {
+        $patientData = $request->input('patient');
+        $appointment->patient()->update($patientData);
     }
+
+    return response()->json(['message' => 'Rendez-vous et patient mis à jour', 'appointment' => $appointment]);
+}
 
     //  Statistiques du médecin
     public function stats()

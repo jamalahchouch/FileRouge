@@ -11,7 +11,7 @@ export default function RegisterPatient({ setUser }) {
     password_confirmation: "",
     phone: "",
     age: "",
-    genre: "",
+    gender: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -76,10 +76,11 @@ export default function RegisterPatient({ setUser }) {
           <Form.Label>Âge</Form.Label>
           <Form.Control name="age" type="number" min="0" max="120" onChange={handleChange} />
         </Form.Group>
+        
 
         <Form.Group className="mb-3">
           <Form.Label>Genre</Form.Label>
-          <Form.Select name="genre" onChange={handleChange}>
+          <Form.Select name="gender" onChange={handleChange}>
             <option value="">Sélectionner</option>
             <option value="male">Homme</option>
             <option value="female">Femme</option>

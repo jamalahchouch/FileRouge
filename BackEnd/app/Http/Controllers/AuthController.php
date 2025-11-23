@@ -66,7 +66,7 @@ class AuthController extends Controller
             'patient' => [
                 'phone' => 'nullable|string|max:20',
                 'age' => 'nullable|integer|min:0|max:120',
-                'genre' => 'nullable|string|in:male,female,other',
+                'gender' => 'nullable|string|in:male,female,other',
             ],
             default => [],
         };
@@ -103,7 +103,7 @@ class AuthController extends Controller
             // Use the validated array data
             $userData['phone'] = $validated['phone'] ?? null;
             $userData['age'] = $validated['age'] ?? null;
-            $userData['genre'] = $validated['genre'] ?? null;
+            $userData['gender'] = $validated['gender'] ?? null;
         }
 
         
@@ -164,4 +164,62 @@ class AuthController extends Controller
             'user' => $request->user(),
         ]);
     }
+      public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:6|confirmed',
+            'phone' => 'sometimes|string|max:20',
+            'age' => 'sometimes|integer|min:0|max:120',
+            'gender' => 'sometimes|string|in:male,female,other',
+            'speciality' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
+            'city' => 'sometimes|string|max:255',
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if (isset($validated['name'])) $user->name = $validated['name'];
+        if (isset($validated['email'])) $user->email = $validated['email'];
+        if (isset($validated['password'])) $user->password = Hash::make($validated['password']);
+        if (isset($validated['phone'])) $user->phone = $validated['phone'];
+        if (isset($validated['age'])) $user->age = $validated['age'];
+        if (isset($validated['gender'])) $user->gender = $validated['gender'];
+        if (isset($validated['speciality'])) $user->speciality = $validated['speciality'];
+        if (isset($validated['description'])) $user->description = $validated['description'];
+        if (isset($validated['city'])) $user->city = $validated['city'];
+
+        if ($request->hasFile('image')) {
+            // Supprimer ancienne image si elle existe
+            if ($user->image) Storage::disk('public')->delete($user->image);
+            $user->image = $request->file('image')->store('users', 'public');
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Utilisateur mis à jour avec succès ✅',
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * Supprimer un utilisateur
+     */
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Supprimer l'image si existante
+        if ($user->image) Storage::disk('public')->delete($user->image);
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Utilisateur supprimé avec succès 🗑️',
+        ]);
+    }
+
 }

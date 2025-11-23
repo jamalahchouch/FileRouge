@@ -46,7 +46,7 @@ export default function NavbarTop() {
 
             {/* NAVIGATION CENTRALE */}
             <Nav className="mx-auto gap-3 text-center">
-              <Nav.Link href="#find-pro" className="fw-medium">Accueil</Nav.Link>
+              <Nav.Link href="/" className="fw-medium">Accueil</Nav.Link>
               <Nav.Link href="#patients" className="fw-medium">À propos</Nav.Link>
               <Nav.Link href="#establishments" className="fw-medium">Services</Nav.Link>
               <Nav.Link href="#contact" className="fw-medium">Contact</Nav.Link>
@@ -111,7 +111,7 @@ export default function NavbarTop() {
                     </Dropdown.Header>
 
                     <Dropdown.Item href="/dashboardpatient">👤 Mon Profil</Dropdown.Item>
-                    <Dropdown.Item href="/dashboard">📅 Mes Rendez-vous</Dropdown.Item>
+                  
 
                     <Dropdown.Divider />
 

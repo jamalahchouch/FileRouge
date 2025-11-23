@@ -1,0 +1,56 @@
+.doctor-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+/* ---- SIDEBAR ---- */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  border-right: 1px solid #e2e2e2;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.doctor-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #007bff;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin: 15px 0;
+}
+
+.sidebar-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.sidebar-menu a:hover {
+  color: #007bff;
+}
+
+/* ---- CONTENT ---- */
+.content {
+  margin-left: 260px;
+  padding: 25px;
+  width: calc(100% - 260px);
+}
