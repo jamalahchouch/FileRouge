@@ -15,7 +15,7 @@ import DoctorStats from "./components/doctor/DoctorStats";
 // Secretary Components
 import SecretaryDashboard from "./components/secretary/SecretaryDashboard";
 import SecretaryAppointments from "./components/secretary/SecretaryAppointments";
-import SecretaryStats from "./components/secretary/secretarystats.jsx";
+import SecretaryStats from "./components/secretary/SecretaryStats.jsx";
 import CreateAppointmentForm from "./components/secretary/CreateAppointmentForm";
 
 function PrivateRoute({ children, role }) {
@@ -74,11 +74,20 @@ function App() {
           }
         />
 
+        <Route
+          path="/secretary/*"
+          element={
+            <PrivateRoute role="secretary">
+              <SecretaryDashboard />
+            </PrivateRoute>
+          }
+        />
+
         {/* Secretary Routes */}
         <Route
           path="/secretary/dashboard"
           element={
-            <PrivateRoute role="secretary">
+            <PrivateRoute role="secretaire">
               <SecretaryDashboard />
             </PrivateRoute>
           }
@@ -107,9 +116,21 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+  path="/secretary"
+  element={
+    <PrivateRoute role="secretary">
+      <SecretaryDashboard />
+    </PrivateRoute>
+  }
+>
+  
+</Route>
+
+        
 
         {/* Redirect unknown routes to login */}
-        
+        <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>
   );

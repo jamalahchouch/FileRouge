@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import DoctorAppointments from"../components/doctor/DoctorAppointments"
 import DoctorAvailability from "../components/doctor/DoctorAvailability";
@@ -16,16 +15,15 @@ export default function DoctorDashboard() {
         return <DoctorAvailability />;
       case "stats":
         return <DoctorStats />;
-      default:
-        return <DoctorAppointments />;
+    
     }
   };
 
   return (
     <div className="d-flex vh-100 bg-light">
-      <Sidebar setActivePage={setActivePage} activePage={activePage} />
+      
       <div className="flex-grow-1">
-        <Header />
+       
         <div className="p-4">{renderPage()}</div>
       </div>
     </div>

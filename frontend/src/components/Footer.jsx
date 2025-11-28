@@ -9,7 +9,7 @@ export default function Footer() {
       <Container>
         <Row>
           <Col md={4} className="mb-4 mb-md-0">
-            <h5 className="mb-3">DOCILAB</h5>
+            <h5 className="mb-3">DOCTOR</h5>
             <p>
               Simplifiez votre parcours de soin. Trouvez et réservez des rendez-vous médicaux en ligne, 24h/24 et 7j/7.
             </p>
@@ -48,7 +48,7 @@ export default function Footer() {
         </Row>
         <hr className="my-4 border-secondary" />
         <div className="text-center text-secondary small">
-          &copy; {new Date().getFullYear()} DOCILAB. Tous droits réservés.
+          &copy; {new Date().getFullYear()} DOCTOR. Tous droits réservés.
         </div>
       </Container>
     </footer>

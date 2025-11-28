@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterDoctor() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -12,6 +15,7 @@ export default function RegisterDoctor() {
     description: "",
     city: "",
   });
+
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
@@ -30,11 +34,12 @@ export default function RegisterDoctor() {
     if (image) data.append("image", image);
 
     try {
-      const res = await axios.post(
+      await axios.post(
         "http://127.0.0.1:8000/api/register/doctor",
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
+
       setMessage("Docteur inscrit avec succès !");
       setFormData({
         name: "",
@@ -53,107 +58,161 @@ export default function RegisterDoctor() {
   };
 
   return (
-    <div className="d-flex justify-content-center mt-5">
-      <Card style={{ width: "45rem", padding: "20px" }}>
-        <h3 className="text-center mb-4">Créer un médecin</h3>
+    <>
+      {/* ⭐️ CSS intégré directement ici */}
+      <style>{`
+        .register-bg {
+          min-height: 100vh;
+          width: 100%;
+          background: linear-gradient(
+            rgba(0, 0, 0, 0.55),
+            rgba(0, 0, 0, 0.55)
+          ),
+          url("https://images.unsplash.com/photo-1580281658628-8b40f1a3a31c?auto=format&fit=crop&w=1350&q=80");
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 40px;
+        }
 
-        {message && <Alert variant="success">{message}</Alert>}
-        {error && <Alert variant="danger">{error}</Alert>}
+        .doctor-card {
+          width: 45rem;
+          background: #ffffffee;
+          backdrop-filter: blur(8px);
+          border-radius: 20px;
+          padding: 25px;
+        }
+      `}</style>
 
-        <Form onSubmit={handleSubmit}>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Nom complet</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label>Spécialité</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="speciality"
-                  value={formData.speciality}
-                  onChange={handleChange}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+      <div className="register-bg">
+        <Card className="shadow-lg doctor-card">
 
-          <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Ville</Form.Label>
-            <Form.Control
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Confirmer mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              name="password_confirmation"
-              value={formData.password_confirmation}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label>Image (facultative)</Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => setImage(e.target.files[0])}
-            />
-          </Form.Group>
-
-          <Button type="submit" variant="primary" className="w-100">
-            Enregistrer le médecin
+          {/* Bouton retour */}
+          <Button
+            variant="secondary"
+            onClick={() => navigate("/")}
+            className="mb-3 rounded-pill"
+          >
+            ⬅ Retour à l'accueil
           </Button>
-        </Form>
-      </Card>
-    </div>
+
+          <h3 className="text-center mb-4 fw-bold text-primary">
+            Créer un médecin
+          </h3>
+
+          {message && <Alert variant="success">{message}</Alert>}
+          {error && <Alert variant="danger">{error}</Alert>}
+
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Nom complet</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Nom et prénom"
+                    required
+                  />
+                </Form.Group>
+              </Col>
+
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Spécialité</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="speciality"
+                    value={formData.speciality}
+                    onChange={handleChange}
+                    placeholder="Ex : Cardiologue"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="email@example.com"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Ville</Form.Label>
+              <Form.Control
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="Casablanca, Rabat..."
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                placeholder="Informations sur le médecin"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Mot de passe</Form.Label>
+              <Form.Control
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Confirmer mot de passe</Form.Label>
+              <Form.Control
+                type="password"
+                name="password_confirmation"
+                value={formData.password_confirmation}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Photo (facultative)</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => setImage(e.target.files[0])}
+              />
+            </Form.Group>
+
+            <Button
+              type="submit"
+              variant="primary"
+              className="w-100 py-2 rounded-pill"
+            >
+              Enregistrer le médecin
+            </Button>
+          </Form>
+        </Card>
+      </div>
+    </>
   );
 }

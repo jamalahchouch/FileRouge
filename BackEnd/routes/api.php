@@ -6,6 +6,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\SecretaryController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AuthController;
+use App\http\controllers\HeloTest;
 
 // Infos utilisateur connecté (auth)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -51,6 +52,7 @@ Route::get('/availability', [DoctorController::class, 'getDoctorAvailability'])
 
     // Secretary routes
     Route::prefix('secretary')->group(function () {
+        Route::post('/create-patient', [SecretaryController::class, 'createPatient']);
         Route::post('/appointments', [SecretaryController::class, 'createAppointment']);
         Route::get('/appointments', [SecretaryController::class, 'listAppointments']);
         Route::put('/appointments/{id}', [SecretaryController::class, 'updateAppointment']);
@@ -72,4 +74,12 @@ Route::get('/availability', [DoctorController::class, 'getDoctorAvailability'])
     // Delete user
     Route::middleware('auth:sanctum')->delete('/users/{id}', [AuthController::class, 'deleteUser']);
 
+    Route::middleware('auth:sanctum')->group(function () {
+
+    
+    Route::get('/secretary/doctors', [SecretaryController::class, 'listDoctors']);
+
+    Route::get('test',[HeloTest::class, 'helloWord']);
+
+});
 });

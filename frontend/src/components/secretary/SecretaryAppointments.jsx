@@ -2,25 +2,80 @@ import { useEffect, useState } from "react";
 import { secretaryAPI } from "../../api/secretary";
 
 export default function SecretaryAppointments() {
-  const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [form, setForm] = useState({
+    patient_id: "",
+    doctor_id: "",
+    start_at: "",
+    end_at: "",
+  });
 
-  const load = () => {
-    secretaryAPI.listAppointments().then(res => setAppointments(res.data));
+  useEffect(() => {
+    async function loadDoctors() {
+      try {
+        const res = await secretaryAPI.listDoctors();
+
+        const list =
+          Array.isArray(res.data) ? res.data :
+          Array.isArray(res.data.doctors) ? res.data.doctors :
+          Array.isArray(res.data.data) ? res.data.data :
+          [];
+
+        setDoctors(list);
+      } catch (e) {
+        console.error("Erreur API Docteurs :", e);
+        setDoctors([]);
+      }
+    }
+
+    loadDoctors();
+  }, []);
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      await secretaryAPI.createAppointment(form);
+      alert("Rendez-vous créé !");
+    } catch (e) {
+      console.error("Erreur création RDV :", e);
+    }
   };
 
-  useEffect(() => { load(); }, []);
-
   return (
-    <div className="card p-3 shadow">
-      <h5>Liste des Rendez-vous</h5>
+    <div className="card p-3">
+      <h4>Créer un Rendez-vous</h4>
 
-      {appointments.map(a => (
-        <div key={a.id} className="border rounded p-2 mb-2">
-          <b>Docteur : {a.doctor?.name}</b><br/>
-          <b>Patient : {a.patient?.name}</b><br/>
-          <span>{a.start_at}</span>
-        </div>
-      ))}
+      <label>Docteur :</label>
+      <select
+        className="form-control mb-3"
+        value={form.doctor_id}
+        onChange={(e) => setForm({ ...form, doctor_id: e.target.value })}
+      >
+        <option value="">Choisir un médecin</option>
+        {doctors.map(d => (
+          <option key={d.id} value={d.id}>{d.name}</option>
+        ))}
+      </select>
+
+      <label>Date début :</label>
+      <input
+        type="datetime-local"
+        className="form-control mb-3"
+        value={form.start_at}
+        onChange={(e) => setForm({ ...form, start_at: e.target.value })}
+      />
+
+      <label>Date fin :</label>
+      <input
+        type="datetime-local"
+        className="form-control mb-3"
+        value={form.end_at}
+        onChange={(e) => setForm({ ...form, end_at: e.target.value })}
+      />
+
+      <button onClick={handleCreate} className="btn btn-primary">
+        Enregistrer
+      </button>
     </div>
   );
 }

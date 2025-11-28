@@ -23,6 +23,44 @@ class SecretaryController extends Controller
         }
     }
 
+public function createPatient(Request $request)
+{
+    $this->authorizeSecretary();
+
+    $request->validate([
+        'name'     => 'required|string|max:255',
+        'email'    => 'required|email|unique:users,email',
+        'age'      => 'required|integer|min:0',
+        'phone'    => 'required|string|max:20',
+        'gender'   => 'required|in:male,female',
+        'password' => 'required|string|min:6',
+    ]);
+
+    // Création du patient
+    $patient = \App\Models\User::create([
+        'name'     => $request->name,
+        'email'    => $request->email,
+        'age'      => $request->age,
+        'phone'    => $request->phone,
+        'gender'   => $request->gender,
+        'password' => \Hash::make($request->password),
+        'role_id'  => 3, // rôle patient
+    ]);
+
+    return response()->json([
+        'message' => 'Patient créé avec succès',
+        'patient' => $patient,
+    ], 201);
+}
+
+public function listDoctors()
+{
+    $doctors = \App\Models\User::whereHas('role', fn($q) => $q->where('name', 'doctor'))
+               ->get();
+
+    return response()->json($doctors);
+}
+
     //  Créer un nouveau rendez-vous pour un patient et un médecin
     public function createAppointment(Request $request)
     {
@@ -121,6 +159,7 @@ class SecretaryController extends Controller
 
         return response()->json([
             'total'     => Appointment::count(),
+            'pending'   => Appointment::where('status', 'cancelled')->count(),
             'pending'   => Appointment::where('status', 'pending')->count(),
             'confirmed' => Appointment::where('status', 'confirmed')->count(),
             'completed' => Appointment::where('status', 'completed')->count(),

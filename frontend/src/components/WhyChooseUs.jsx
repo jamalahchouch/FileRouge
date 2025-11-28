@@ -10,7 +10,7 @@ const items = [
 
 export default function WhyChooseUs(){
   return (
-    <section className="py-5">
+    <section className="py-5" id="aprops">
       <div className="container text-center">
         <h3 className="section-title">Pourquoi nous choisir ?</h3>
         <p className="text-muted mb-5">Une plateforme conçue pour simplifier votre accès aux soins et vous offrir la meilleure expérience.</p>

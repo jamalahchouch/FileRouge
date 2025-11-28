@@ -10,6 +10,7 @@ import Contact from "../components/Contact.jsx";
 import NavbarTop from "../components/NavBarTop.jsx";
 import HeroSlider from "../components/HeroSlide.jsx";
 import DoctorList from "../components/DoctorList.jsx";
+import incrementation from "../components/incrementation.jsx";
  
 
 
@@ -22,9 +23,9 @@ export default function Home() {
   }, []);
   return (
     <>
-       <NavbarTop />
+      <NavbarTop />
       <HeroSlider />
-      <SearchBar />
+      <incrementation />
       <DoctorList user={user} />
       <Steps />
       <Specialities />

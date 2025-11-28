@@ -47,8 +47,8 @@ export default function NavbarTop() {
             {/* NAVIGATION CENTRALE */}
             <Nav className="mx-auto gap-3 text-center">
               <Nav.Link href="/" className="fw-medium">Accueil</Nav.Link>
-              <Nav.Link href="#patients" className="fw-medium">À propos</Nav.Link>
-              <Nav.Link href="#establishments" className="fw-medium">Services</Nav.Link>
+              <Nav.Link href="#aprops" className="fw-medium">À propos</Nav.Link>
+              <Nav.Link href="#services" className="fw-medium">Services</Nav.Link>
               <Nav.Link href="#contact" className="fw-medium">Contact</Nav.Link>
             </Nav>
 

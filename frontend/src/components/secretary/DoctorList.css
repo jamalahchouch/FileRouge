@@ -1,0 +1,39 @@
+.doctor-card {
+  transition: 0.3s;
+  border-radius: 8px;
+}
+.doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.selected-doctor {
+  border: 2px solid #28a745 !important;
+  background-color: #e6f4ea;
+}
+
+.appointments-section table th,
+.appointments-section table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.table-success {
+  background-color: #28a745 !important;
+  color: #fff;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}

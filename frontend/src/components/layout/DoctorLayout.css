@@ -1,32 +1,74 @@
+/* src/layouts/DoctorLayout.css */
+
 .doctor-dashboard {
   display: flex;
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #f5f9ff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ---- SIDEBAR ---- */
 .sidebar {
-  width: 240px;
-  background: #ffffff;
+  width: 250px;
+  background: #99c4dd;
   border-right: 1px solid #e2e2e2;
-  padding: 20px;
+  padding: 25px 20px;
   position: fixed;
-  height: 100vh;
+  top: 0;
+  left: 0;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+}
+
+.photo-container {
+  position: relative;
+  display: inline-block;
 }
 
 .doctor-photo {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #007bff;
+  transition: transform 0.3s ease;
 }
 
+.doctor-photo:hover {
+  transform: scale(1.05);
+}
+
+.status-dot {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  width: 12px;
+  height: 12px;
+  background: #28a745;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.sidebar-header h4 {
+  margin: 10px 0 2px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sidebar-header small {
+  color: #6c757d;
+  font-size: 0.85rem;
+}
+
+/* Menu */
 .sidebar-menu {
   list-style: none;
   padding: 0;
@@ -35,22 +77,34 @@
 
 .sidebar-menu li {
   margin: 15px 0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu li.active,
+.sidebar-menu li:hover {
+  background: #e7f1ff;
 }
 
 .sidebar-menu a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  transition: 0.2s;
+  display: block;
+  padding: 10px 15px;
+  transition: color 0.2s ease;
 }
 
-.sidebar-menu a:hover {
+.sidebar-menu li.active a {
   color: #007bff;
+  font-weight: 600;
 }
 
 /* ---- CONTENT ---- */
 .content {
-  margin-left: 260px;
-  padding: 25px;
-  width: calc(100% - 260px);
+  margin-left: 250px;
+  padding: 30px;
+  width: calc(100% - 250px);
+  background: #f5f9ff;
+  transition: all 0.3s ease;
 }
